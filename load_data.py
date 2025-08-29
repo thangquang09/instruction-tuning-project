@@ -1,9 +1,9 @@
 import re
 
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
+from tqdm import tqdm
 from transformers import AutoTokenizer
-
-MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"
+from config import MODEL_NAME
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 tokenizer.pad_token = tokenizer.eos_token
@@ -127,3 +127,22 @@ def generate_full_prompt(text, answer):
         return None
     
 
+def prepare_model_data(dataset):
+    samples = []
+    
+    for index, sample in tqdm(dataset.iterrows()):
+        try:
+            sample_text = sample['text']
+            sample_answer = sample['answer']
+
+            inputs = generate_full_prompt(sample_text, sample_answer)
+            
+            # print(inputs)
+            if inputs is not None:            
+                samples.append(inputs)
+        except Exception as e:
+            print(f"Error processing : {e}")
+            print("Skip invalid dataset")
+            
+    return Dataset.from_list(samples)
+        
