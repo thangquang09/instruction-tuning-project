@@ -29,6 +29,7 @@ bnb_config = BitsAndBytesConfig(
 )
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+tokenizer.pad_token = tokenizer.eos_token
 
 def get_model() -> PeftModel:
     model = AutoModelForCausalLM.from_pretrained(
