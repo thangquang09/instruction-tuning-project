@@ -7,6 +7,7 @@ from transformers import (
     TrainingArguments,
 )
 
+from config import PEFT_MODEL
 from load_data import load_dataset, prepare_model_data
 from load_model import get_model
 
