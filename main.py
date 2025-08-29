@@ -8,7 +8,7 @@ from transformers import (
 )
 
 from config import PEFT_MODEL
-from load_data import load_dataset, prepare_model_data
+from load_data import get_datasets, prepare_model_data
 from load_model import get_model
 
 
@@ -18,7 +18,7 @@ class LogLossCallback(TrainerCallback):
             print(f"Step {state.global_step} - Loss: {logs['loss']:.4f}")
 
 
-dataset = load_dataset()
+dataset = get_datasets()
 train_dataset = prepare_model_data(dataset["train_dataset"])
 valid_dataset = prepare_model_data(dataset["valid_dataset"])
 tokenizer, model = get_model()
